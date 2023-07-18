@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for uniquephonebook on 2023-07-18T14:10:30+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "uniquephonebook"
+primary_region = "arn"
+
+[env]
+  PORT = "8080" # lisätään tämä
+
+[experimental]
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 8080 
+  processes = ["app"]
+  
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
