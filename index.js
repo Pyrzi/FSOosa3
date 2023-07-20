@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
     }
   ]
 */
-  
+
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -62,7 +62,7 @@ app.get('/api/persons', (req, res) => {
     res.json(persons)
   })
 })
-  
+
 app.get('/info', (req, res, next) => {
   Person.find({})
     .then((persons) => {
@@ -79,19 +79,19 @@ app.post('/api/persons', (request, response, next) => {
   if (!name || !number) {
     return response.status(400).json({ error: 'Name or number is missing' })
   }
-    
+
   const newPerson = new Person({
     name: name,
     number: number
   })
-    
+
   newPerson.save()
     .then((savedPerson) => {
       response.json(savedPerson)
     })
     .catch((error) => next(error))
-}) 
-  
+})
+
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
   const person = {
@@ -128,22 +128,22 @@ app.use(requestLogger)
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
-  
+
 app.use(unknownEndpoint)
 
-  
+
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
-  
+
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
   }
-  
+
   next(error)
 }
-  
+
 // tämä tulee kaikkien muiden middlewarejen rekisteröinnin jälkeen!
 app.use(errorHandler)
 
